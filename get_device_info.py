@@ -4,7 +4,7 @@ ip = '10.254.0.1'
 username = 'cisco'
 password = 'cisco'
 device_type = 'cisco_ios'
-port = '22' 
+port = 22 
 
 net_connect = netmiko.ConnectHandler(
     ip = ip,
