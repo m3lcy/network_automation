@@ -6,7 +6,7 @@ USER = "cisco"
 PASS = "cisco"
 TYPE = "cisco_ios"
 
-r1 = ConnectHandler(host=HOST, username=USER, password=PASS, device_type=TYPE)
+dls1 = ConnectHandler(host=HOST, username=USER, password=PASS, device_type=TYPE)
 
 
 # Inside the python environment
@@ -22,8 +22,8 @@ commands = [
     'no shutdown'
 ]
 
-r1.send_config_set(commands)
+dls1.send_config_set(commands)
 
-r1.send_command('write memory')
+dls1.send_command('write memory')
 
-r1.disconnect()
+dls1.disconnect()
