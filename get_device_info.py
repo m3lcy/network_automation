@@ -1,6 +1,6 @@
 import netmiko
 
-ip = '10.254.0.1'
+ip = '172.16.12.225'
 username = 'cisco'
 password = 'cisco'
 device_type = 'cisco_ios'
