@@ -7,3 +7,23 @@ PASS = "cisco"
 TYPE = "cisco_xe"
 
 r1 = ConnectHandler(host=HOST, username=USER, password=PASS, device_type=TYPE)
+
+
+# Inside the python environment
+commands = [
+    'interface vlan10',
+    'ip address 172.16.12.1 255.255.255.224',
+    'ip helper-address 172.16.12.226',
+    'ip nat inside',
+    'standby version 2',
+    'standby 1 ip 172.16.12.254',
+    'standby 1 priority 150',
+    'standby 1 preempt',
+    'no shutdown'
+]
+
+r1.send_config_set(commands)
+
+r1.send_command('write memory')
+
+r1.disconnect()
