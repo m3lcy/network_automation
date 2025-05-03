@@ -1,8 +1,7 @@
 vlans:
-  - vlan_id: 10
-  - vlan_name: CORE
-  - vlan_id: 20
-  - vlan_name: MGMT
-  - vlan_id: 30
-  - vlan_name: COMPUTE
-
+  - id: 10
+    name: CORE
+  - id: 20
+    name: MGMT
+  - id: 30
+    name: COMPUTE
