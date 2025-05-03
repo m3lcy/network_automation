@@ -44,6 +44,6 @@ except Exception as e:
 finally:
     if 'net_connect' in locals():
         net_connect.disconnect()
-        print("Disconnected from {device['host']}")
+        print(f"Disconnected from {device['host']}")
     else:
         print("No connection to disconnect")
