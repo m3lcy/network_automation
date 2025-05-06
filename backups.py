@@ -36,7 +36,6 @@ for device in devices:
             file.write(f"Output for {device['host']}")
             file.write(running_config)
 
-
     except Exception as e:
         print(f" Connection to {device['host']} failed: {e}")
 
