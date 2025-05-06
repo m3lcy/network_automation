@@ -1,70 +1,58 @@
 from netmiko import ConnectHandler
-from netmiko.exceptions import NetmikoTimeoutException, NetmikoAuthenticationException
+import os
 
+vlan_id = input("Enter the VLAN ID you want to create: ")
+vlan_name = input("Enter the VLAN name you want to create: ")
 
-host = "192.168.12.36" 
-username = "admin" 
-password = "cisco"
-device_type = "cisco_ios"
-port = 22
-device_name = "dls1"
-
-commands_vlan10 = [
-    'interface vlan10',
-    'ip address 172.16.12.1 255.255.255.224',
-    'ip helper-address 172.16.12.226',
-    'ip nat inside',
-    'standby version 2',
-    'standby 1 ip 172.16.12.254',
-    'standby 1 priority 150',
-    'standby 1 preempt',
-    'no shutdown'
+devices = [
+    {
+        'host': '192.168.1.1',
+        'username': 'core_r1',
+        'password': 'cisco',
+        'device_type': 'cisco_xr',
+        'port': 22
+    },
+    {
+        'host': '192.168.1.2',
+        'username': 'core_r2',
+        'password': 'cisco',
+        'device_type': 'cisco_xr',
+        'port': 22
+    },
 ]
 
-commands_vlan20 = [
-    'interface vlan20',
-    'ip address 172.16.12.33 255.255.255.224',
-    'ip helper-address 172.16.12.226',
-    'ip nat inside',
-    'standby version 2',
-    'standby 1 ip 172.16.12.254',
-    'standby 1 priority 150',
-    'standby 1 preempt',
-    'no shutdown'
-]
+for device in  devices:
+    try: 
+        net_connect = ConnectHandler(
+            host = device['host'],
+            username = device['username'],
+            password = device['password'],
+            device_type = device['device_type'],
+            port = device['port']
+        )
 
-dls1 = None
+        sh_vlan_br = net_connect.send_command('show vlan brief')
 
-try:
-    dls1 = ConnectHandler(
-    host = host,
-    username = username,
-    password = password,
-    device_type = device_type,
-    port = port
-    )
-    print(f"Connected to {device_name}")
+        if vlan_id in sh_vlan_br:
+            print(f"VLAN {vlan_id} already exists on {device['host']}, Skipping...")
+        else:
+            print(f"Creating {vlan_id}...")
+            net_connect.send_command([f"vlan {vlan_id}", f"name {vlan_name}"])
 
-    output_vlan10 = dls1.send_config_set(commands_vlan10)
-    print(f"VLAN 10 configuration sent.")
-    print(output_vlan10)
+        os.makedirs('logs', exist_ok=True)
 
-    output_vlan20 = dls1.send_config_set(commands_vlan20)
-    print(f"VLAN 20 configuration sent.")
-    print(output_vlan20)
+        with open(f"logs/{device['host']}_vlan.txt", 'w') as file:
+            if vlan_id in sh_vlan_br:
+                file.write(f"[SKIPPED] VLAN {vlan_id} already exists on {device['host']}\n")
+            else:
+                file.write(f"Creating VLAN {vlan_id} on {device['host']}\n")
 
-    save_output = dls1.send_command('write memory')
-    print(f"Save Output:")
-    print(save_output)
-    
-except NetmikoAuthenticationException:
-    print(f"Authentication failed for {device_name} ({host})")
-except NetmikoTimeoutException:
-    print(f"Connection to {device_name} ({host}) timed out")
-except Exception as e:
-    print(f"An unexpected error occurred: {e}")
-finally:
-    if dls1: 
-        dls1.disconnect()
-        print(f"Disconnected from {device_name}")
+    except Exception as e:
+        print(f"Failed to connect to {device['host']}: Error {e}")
 
+    finally:
+        if 'net_connect' in locals():
+            net_connect.disconnect()
+            print(f"Successfully disconnected from {device['host']}")
+        else:
+            print(f"No connection to disconnect")
