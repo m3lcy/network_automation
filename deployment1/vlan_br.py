@@ -39,7 +39,7 @@ try:
                     file.write(f"[CREATED] VLAN {vlan_id} {vlan_name} created) on {device['host']}\n")
 
 except Exception as e:
-    print("Could not connect to {device['host']}: Error {e}")
+    print(f"Could not connect to {device['host']}: Error {e}")
 
 finally:
     if 'net_connect' in locals():
