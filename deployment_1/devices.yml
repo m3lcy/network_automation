@@ -3,7 +3,10 @@ devices:
     username: admin
     password: cisco
     device_type: cisco_ios
+    device_name: l3-sw-01
   - host: 192.168.1.2
     username: admin
     password: cisco
     device_type: cisco_ios
+    device_name: l3-sw-02
+    
