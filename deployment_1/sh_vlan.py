@@ -12,6 +12,7 @@ with open('devices.yml') as (f):
 os.makedirs("logs", exist_ok=True)
 
 try:
+    net_connect=None
     for device in devices:
         net_connect = ConnectHandler(
             host = device['host'],
