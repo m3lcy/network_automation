@@ -1,0 +1,25 @@
+devices:
+  - host: 192.168.12.36
+    username: admin
+    device_type: cisco_ios
+    device_name: l3-sw-01
+  - host: 192.168.12.37
+    username: admin
+    device_type: cisco_ios
+    device_name: l3-sw-02
+  - host: 192.168.12.38
+    username: admin
+    device_type: cisco_ios
+    device_name: access-sw-01
+  - host: 192.168.12.39
+    username: admin
+    device_type: cisco_ios
+    device_name: access-sw-02
+  - host: 192.168.12.40
+    username: admin
+    device_type: cisco_ios
+    device_name: access-sw-03
+  - host: 192.168.12.41
+    username: admin
+    device_type: cisco_ios
+    device_name: access-sw-04

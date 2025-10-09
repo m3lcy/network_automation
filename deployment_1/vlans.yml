@@ -1,5 +1,0 @@
-vlans:
-  - id: 10
-    name: USERS
-  - id: 20
-    name: SERVERS

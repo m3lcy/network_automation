@@ -13,6 +13,8 @@ logging.basicConfig(
     )
 
 password = os.getenv('DEVICE_PASS')
+if not password:
+    raise EnvironmentError('DEVICE_PASS not set in environment.')
 
 devices = [
     {
@@ -68,8 +70,14 @@ devices = [
 for device in devices:
     net_connect = None
     try:
-        net_connect = ConnectHandler(**device)
-        logging.info(f"Connected to {device['device_name']}")
+        net_connect = ConnectHandler(
+            host = device['host'],
+            username = device['username'],
+            password = password,
+            device_type = device['device_type'],
+            port = device['port']
+        )
+        logging.info(f"Connected to {device['device_name']} ({device['host']})")
 
         commands = ['show ip interface brief',
                     'show ip route',
@@ -81,7 +89,7 @@ for device in devices:
         outputs = {}
         for cmd in commands:
             outputs[cmd] = net_connect.send_command(cmd)
-        logging.info(f"Collected {len(outputs)} command outputs from {device['device_name']}")
+        logging.info(f"Collected {len(outputs)} command outputs from {device['device_name']} ({device['host']})")
 
         filename = f"{device['device_name']}_outputs_{timestamp}.cfg"
         with open(filename,"x") as f:
@@ -89,11 +97,11 @@ for device in devices:
         os.chmod(filename, 0o444)
 
     except Exception as e:
-        logging.error(f"Error {e}")
+        logging.error(f"Error: {e}")
 
     finally:
         if net_connect:
             net_connect.disconnect()
-            logging.info(f"Disconnected from device {device['device_name']} {device['host']}")
+            logging.info(f"Disconnected from device {device['device_name']} ({device['host']})")
         else:
-            logging.warning(f"Could not connect to {device['device_name']} {device['host']}")
+            logging.warning(f"Could not connect to {device['device_name']} ({device['host']})")
