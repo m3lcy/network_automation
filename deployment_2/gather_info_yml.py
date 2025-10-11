@@ -6,8 +6,11 @@ import yaml
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+os.makedirs('logs', exist_ok = True)
+os.makedirs('outputs', exist_ok = True )
+
 logging.basicConfig(
-    filename = 'device_access.log',
+    filename = 'logs/device_access.log',
     level = logging.INFO,
     format = '%(asctime)s - %(levelname)s - %(message)s'
     )
@@ -16,7 +19,7 @@ password = os.getenv('DEVICE_PASS')
 if not password:
     raise EnvironmentError('DEVICE_PASS not set in environment.')
 
-with open('devices.yml', 'r') as f:
+with open('configs/devices.yml', 'r') as f:
     devices = yaml.safe_load(f)['devices']
 
 for device in devices:
@@ -27,7 +30,7 @@ for device in devices:
             username = device['username'],
             password = password,
             device_type = device['device_type'],
-            port = device['port']
+            port = 22
         )
         logging.info(f"Connected to {device['device_name']} ({device['host']})")
 
@@ -44,9 +47,9 @@ for device in devices:
             outputs[cmd] = net_connect.send_command(cmd)
         logging.info(f"Collected {len(outputs)} command outputs from {device['device_name']} ({device['host']})")
 
-        filename = f"{device['device_name']}_outputs_{timestamp}.cfg"
+        filename = f"outputs/{device['device_name']}_outputs_{timestamp}.cfg"
         with open(filename,"x") as f:
-            f.write(f"Output for {device['device_name']}: \n{outputs}\n")
+            yaml.dump(outputs, f, default_flow_style = False)
         os.chmod(filename, 0o444)
 
     except Exception as e:
