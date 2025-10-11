@@ -2,12 +2,15 @@ from netmiko import ConnectHandler
 from datetime import datetime
 import logging
 import os
-
+import yaml
 
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
+os.makedirs('logs', exist_ok = True)
+os.makedirs('outputs', exist_ok = True)
+
 logging.basicConfig(
-    filename = 'device_access.log',
+    filename = 'logs/device_access.log',
     level = logging.INFO,
     format = '%(asctime)s - %(levelname)s - %(message)s'
     )
@@ -91,9 +94,9 @@ for device in devices:
             outputs[cmd] = net_connect.send_command(cmd)
         logging.info(f"Collected {len(outputs)} command outputs from {device['device_name']} ({device['host']})")
 
-        filename = f"{device['device_name']}_outputs_{timestamp}.cfg"
+        filename = f"outputs/{device['device_name']}_outputs_{timestamp}.cfg"
         with open(filename,"x") as f:
-            f.write(f"Output for {device['device_name']}: \n{outputs}\n")
+            yaml.dump(outputs, f, default_flow_style = False)
         os.chmod(filename, 0o444)
 
     except Exception as e:
