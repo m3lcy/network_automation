@@ -1,0 +1,9 @@
+- name: Push IOS Configs
+  hosts: all
+  connection: network_cli
+  gather_facts: no
+
+  tasks:
+    - name: Push rendered VLAN configs
+      ios_config:
+        src: outputs/generated_vlan_config.cfg

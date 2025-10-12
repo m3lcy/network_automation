@@ -1,0 +1,38 @@
+hosts:
+  l3-sw-01:
+    ansible_host: 192.168.12.36
+    ansible_user: admin
+    ansible_password: cisco
+    ansible_network_os: ios
+    ansible_connection: network_cli
+    enable_password: cisco
+  l3-sw-02:
+    ansible_host: 192.168.12.37
+    ansible_user: admin
+    ansible_password: cisco
+    ansible_network_os: ios
+    enable_password: cisco
+  access-sw-01:
+    ansible_host: 192.168.12.38
+    ansible_user: admin
+    ansible_password: cisco
+    ansible_network_os: ios
+    enable_password: cisco123
+  access-sw-02:
+    ansible_host: 192.168.12.39
+    ansible_user: admin
+    ansible_password: cisco
+    ansible_network_os: ios
+    enable_password: cisco123
+  access-sw-03:
+    ansible_host: 192.168.12.40
+    ansible_user: admin
+    ansible_password: cisco
+    ansible_network_os: ios
+    enable_password: cisco123
+  access-sw-04:
+    ansible_host: 192.168.12.41
+    ansible_user: admin
+    ansible_password: cisco
+    ansible_network_os: ios
+    enable_password: cisco123
