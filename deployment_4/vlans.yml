@@ -1,0 +1,7 @@
+vlans:
+  - id: 10
+    name: CORE
+  - id: 20
+    name: MGMT
+  - id: 30
+    name: COMPUTE
