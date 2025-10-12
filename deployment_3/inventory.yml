@@ -5,13 +5,13 @@ hosts:
     ansible_password: cisco
     ansible_network_os: ios
     ansible_connection: network_cli
-    enable_password: cisco
+    enable_password: cisco123
   l3-sw-02:
     ansible_host: 192.168.12.37
     ansible_user: admin
     ansible_password: cisco
     ansible_network_os: ios
-    enable_password: cisco
+    enable_password: cisco123
   access-sw-01:
     ansible_host: 192.168.12.38
     ansible_user: admin
