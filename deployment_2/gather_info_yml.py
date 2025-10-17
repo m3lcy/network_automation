@@ -7,7 +7,7 @@ import yaml
 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
 os.makedirs('logs', exist_ok = True)
-os.makedirs('outputs', exist_ok = True )
+os.makedirs('outputs', exist_ok = True)
 
 logging.basicConfig(
     filename = 'logs/device_access.log',
