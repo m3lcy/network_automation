@@ -25,13 +25,8 @@ with open('configs/devices.yml', 'r') as f:
 for device in devices:
     net_connect = None
     try:
-        net_connect = ConnectHandler(
-            host = device['host'],
-            username = device['username'],
-            password = password,
-            device_type = device['device_type'],
-            port = 22
-        )
+        netmiko_params = {k: v for k, v in device.items() if k in ['host', 'username', 'device_type', 'port']}
+        net_connect = ConnectHandler(**netmiko_params)
         logging.info(f"Connected to {device['device_name']} ({device['host']})")
 
         commands = [
