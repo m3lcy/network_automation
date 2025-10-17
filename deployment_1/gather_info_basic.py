@@ -73,13 +73,8 @@ devices = [
 for device in devices:
     net_connect = None
     try:
-        net_connect = ConnectHandler(
-            host = device['host'],
-            username = device['username'],
-            password = password,
-            device_type = device['device_type'],
-            port = device['port']
-        )
+        netmiko_params = {k: v for k, v in device.items() if k in ['host','username','password','device_type','port']}
+        net_connect = ConnectHandler(**netmiko_params)
         logging.info(f"Connected to {device['device_name']} ({device['host']})")
 
         commands = ['show ip interface brief',
