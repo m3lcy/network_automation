@@ -90,7 +90,7 @@ for device in devices:
         logging.info(f"Collected {len(outputs)} command outputs from {device['device_name']} ({device['host']})")
 
         filename = f"outputs/{device['device_name']}_outputs_{timestamp}.cfg"
-        with open(filename,"x") as f:
+        with open(filename, "x") as f:
             yaml.safe_dump(outputs, f, default_flow_style = False)
         os.chmod(filename, 0o444)
 
