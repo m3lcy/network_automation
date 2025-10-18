@@ -44,7 +44,7 @@ for device in devices:
 
         filename = f"outputs/{device['device_name']}_outputs_{timestamp}.cfg"
         with open(filename,"x") as f:
-            yaml.dump(outputs, f, default_flow_style = False)
+            yaml.safe_dump(outputs, f, default_flow_style = False)
         os.chmod(filename, 0o444)
 
     except Exception as e:
