@@ -7,7 +7,7 @@ core-r1:
     vault_path: "network/devices/core-r1"
 
 l3-sw-01: 
-  hostname: 192.168.12.37
+  hostname: 192.168.12.36
   groups: 
     - cisco_ios
     - l3_switches

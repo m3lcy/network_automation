@@ -44,17 +44,17 @@ def get_device_credentials(host):
         host.password = data["login_password"]
         host.data["secret"] = data["enable_secret"]
 
-        logging.info(f"Credentials retrieved for {host.name} from Vault")
+        logging.info(f"Credentials retrieved for {host.name} ({host.hostname}) from Vault")
 
     except Exception as e:
-        logging.error(f"Error retrieving secrets for {host.name} from Vault: {e}")
+        logging.error(f"Error retrieving secrets for {host.name} ({host.hostname}) from Vault: {e}")
         raise
 
 for host_obj in nr.inventory.hosts.values():
     try:
         get_device_credentials(host_obj)
     except Exception as e:
-        logging.error(f"Skipping {host_obj.name} due to Vault error: {e}")
+        logging.error(f"Skipping {host_obj.name} ({host_obj.hostname}) due to Vault error: {e}")
 
 def collect_device_info(task):
     try:
@@ -67,25 +67,30 @@ def collect_device_info(task):
             "show bgp summary"
         ]
         outputs = {}
+
         for cmd in commands:
-            result = task.run(task = netmiko_send_command, command_string = cmd)
+            result = task.run(
+                task = netmiko_send_command,
+                command_string = cmd,
+                use_textfsm = True
+            )
             outputs[cmd] = result.result
-            logging.info(f"Collecting data from {task.host.name} ({task.host.hostname})")
+            logging.info(f"Collected structured output from {task.host.name} ({task.host.hostname})")
        
-        filename = f"outputs/{task.host.name}_outputs_{timestamp}.yaml"
+        filename = f"outputs/{task.host.name}_structured_{timestamp}.yaml"
         with open(filename, "w") as f:
             yaml.safe_dump(outputs, f, default_flow_style=False)
         os.chmod(filename, 0o444)
 
-        logging.info(f"Collected and saved {len(outputs)} command outputs from {task.host.name}")
+        logging.info(f"Structured output saved for {task.host.name} ({task.host.hostname})")
 
         return Result(
             host = task.host,
-            result = f"Collected {len(outputs)} commands from {task.host.name}"
+            result = f"Structured data collected from {len(commands)} commands from {task.host.name} ({task.host.hostname})"
         )
 
     except Exception as e:
-        logging.error(f"Error collecting info from {task.host.name}: {e}")
+        logging.error(f"Error collecting info from {task.host.name} ({task.host.hostname}): {e}")
         return Result(
             host = task.host,
             failed = True,
