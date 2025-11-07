@@ -21,52 +21,52 @@ if not password:
 
 devices = [
     {
-        'host' : '192.168.12.36',
-        'username' : 'admin',
-        'password' : password,
-        'device_type' : 'cisco_ios',
-        'device_name' : 'l3-sw-01',
-        'port' : 22
+        'host': '192.168.12.36',
+        'username': 'admin',
+        'password': password,
+        'device_type': 'cisco_ios',
+        'device_name': 'l3-sw-01',
+        'port': 22
     },
     {
-        'host' : '192.168.12.37',
-        'username' : 'admin',
-        'password' : password,
-        'device_type' : 'cisco_ios',
-        'device_name' : 'l3-sw-02',
-        'port' : 22
+        'host': '192.168.12.37',
+        'username': 'admin',
+        'password': password,
+        'device_type': 'cisco_ios',
+        'device_name': 'l3-sw-02',
+        'port': 22
     },
     {
-        'host' : '192.168.12.38',
-        'username' : 'admin',
-        'password' : password,
-        'device_type' : 'cisco_ios',
-        'device_name' : 'access-sw-01',
-        'port' : 22
+        'host': '192.168.12.38',
+        'username': 'admin',
+        'password': password,
+        'device_type': 'cisco_ios',
+        'device_name': 'access-sw-01',
+        'port': 22
     },
     {
-        'host' : '192.168.12.39',
-        'username' : 'admin',
-        'password' : password,
-        'device_type' : 'cisco_ios',
-        'device_name' : 'access-sw-02',
-        'port' : 22
+        'host': '192.168.12.39',
+        'username': 'admin',
+        'password': password,
+        'device_type': 'cisco_ios',
+        'device_name': 'access-sw-02',
+        'port': 22
     },
     {
-        'host' : '192.168.12.40',
-        'username' : 'admin',
-        'password' : password,
-        'device_type' : 'cisco_ios',
-        'device_name' : 'access-sw-03',
-        'port' : 22
+        'host': '192.168.12.40',
+        'username': 'admin',
+        'password': password,
+        'device_type': 'cisco_ios',
+        'device_name': 'access-sw-03',
+        'port': 22
     },
     {
-        'host' : '192.168.12.41',
-        'username' : 'admin',
-        'password' : password,
-        'device_type' : 'cisco_ios',
-        'device_name' : 'access-sw-04',
-        'port' : 22
+        'host': '192.168.12.41',
+        'username': 'admin',
+        'password': password,
+        'device_type': 'cisco_ios',
+        'device_name': 'access-sw-04',
+        'port': 22
     }
 ]
 
@@ -86,7 +86,7 @@ for device in devices:
                     ]
         outputs = {}
         for cmd in commands:
-            outputs[cmd] = net_connect.send_command(cmd)
+            outputs[cmd] = net_connect.send_command(cmd, use_textfsm = True)
         logging.info(f"Collected {len(outputs)} command outputs from {device['device_name']} ({device['host']})")
 
         filename = f"outputs/{device['device_name']}_outputs_{timestamp}.cfg"
@@ -95,7 +95,7 @@ for device in devices:
         os.chmod(filename, 0o444)
 
     except Exception as e:
-        logging.error(f"Error: {e}")
+        logging.error(f"Error on {device['device_name']} ({device['host']}): {e}")
 
     finally:
         if net_connect:

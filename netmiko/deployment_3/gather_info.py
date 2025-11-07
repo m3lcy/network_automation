@@ -77,7 +77,7 @@ for device in devices:
         ]
         outputs = {}
         for cmd in commands:
-            outputs[cmd] = net_connect.send_command(cmd)
+            outputs[cmd] = net_connect.send_command(cmd, use_textfsm = True)
         logging.info(f"Collected {len(outputs)} command outputs from {name} ({host})")
 
         filename = f"outputs/{device['device_name']}_outputs_{timestamp}.cfg"
@@ -86,7 +86,7 @@ for device in devices:
         os.chmod(filename, 0o444)
 
     except Exception as e:
-        logging.error(f"Error: {e}")
+        logging.error(f"Error on {device['device_name']} ({device['host']}): {e}")
 
     finally:
         if net_connect:

@@ -78,7 +78,7 @@ def collect_device_info(task):
             logging.info(f"Collected structured output from {task.host.name} ({task.host.hostname})")
        
         filename = f"outputs/{task.host.name}_structured_{timestamp}.yaml"
-        with open(filename, "w") as f:
+        with open(filename, "x") as f:
             yaml.safe_dump(outputs, f, default_flow_style=False)
         os.chmod(filename, 0o444)
 

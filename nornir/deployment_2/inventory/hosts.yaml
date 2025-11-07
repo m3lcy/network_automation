@@ -5,9 +5,6 @@ core-r1:
     - core_routers
   data:
     vault_path: "network/devices/core-r1"
-    custom_commands:
-      - router ospf 1
-      - network 172.17.0.0 0.0.255.255 area 0
 
 l3-sw-01: 
   hostname: 192.168.12.36
@@ -16,7 +13,6 @@ l3-sw-01:
     - l3_switches
   data: 
     vault_path: "network/devices/l3-sw-01"
-    custom_commands:
 
 l3-sw-02:
   hostname: 192.168.12.37
@@ -25,11 +21,6 @@ l3-sw-02:
     - l3_switches
   data:
     vault_path: "network/devices/l3-sw-02"
-    custom_commands:
-      - interface GigabitEthernet0/1
-      - no switchport
-      - ip address 172.16.12.230 255.255.255.252
-      - no shutdown
 
 access-sw-01:
   hostname: 192.168.12.38
