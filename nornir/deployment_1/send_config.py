@@ -60,7 +60,7 @@ for host_obj in nr.inventory.hosts.values():
 def send_device_config(task):
     try:
         global_commands = [
-            'banner motd ^Authorized Access Only!!!',
+            'banner motd ^Authorized Access Only!!!^',
             'service password-encryption',
             'ip routing',
             'crypto key generate rsa usage-keys label ssh-key modulus 1024',

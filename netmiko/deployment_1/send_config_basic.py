@@ -78,7 +78,7 @@ for device in devices:
         logging.info(f"Connected to {device['device_name']} ({device['host']})")
 
         config_commands = [
-                    'banner motd ^Authorized Access Only!!!',
+                    'banner motd ^Authorized Access Only!!!^',
                     'service password-encryption',
                     'ip routing',
                     'crypto key generate rsa usage-keys label ssh-key modulus 1024',
