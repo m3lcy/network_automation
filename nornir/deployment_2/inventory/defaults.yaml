@@ -1,7 +1,0 @@
-username: admin
-platform: cisco_ios
-
-domain_name: cisco.com
-connection_timeout: 10
-retries: 2
-vault_mount: "network/devices"
