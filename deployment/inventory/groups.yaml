@@ -14,8 +14,4 @@ access_switches:
     location: branch_nyc
 
 cisco_ios:
-  platform: cisco_ios
-  connection_options:
-    netmiko:
-      extras:
-        secret: "{{ get_secret('enable_secret') }}"
+  platform: ios

@@ -1,7 +1,3 @@
-import sys
-import os
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
-
 from modules.logging_utils import setup_logging
 from modules.vault_utils import init_vault
 from modules.nornir_init import init_nornir
