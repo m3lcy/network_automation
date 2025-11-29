@@ -1,0 +1,5 @@
+interfaces:
+  - name: GigabitEthernet0/1
+    mode: trunk
+    native_vlan: 99
+    shutdown: false

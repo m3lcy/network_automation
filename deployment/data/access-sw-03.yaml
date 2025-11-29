@@ -1,0 +1,5 @@
+interfaces:
+  - name: VLAN1
+    ip_address: 192.168.12.40
+    subnet_mask: 255.255.255.224
+    shutdown: false

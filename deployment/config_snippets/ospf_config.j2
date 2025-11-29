@@ -1,0 +1,10 @@
+{% if ospf is defined %}
+router ospf {{ ospf.process_id }}
+ router-id {{ ospf.router_id }}
+ {% if ospf.log_adjacency_changes is defined and ospf.log_adjacency_changes == true %}
+ log-adjacency-changes
+ {% endif %}
+ {% for net in ospf.networks %}
+ network {{ net.network }} {{ net.wildcard }} area {{ net.area }}
+ {% endfor %}
+ {% endif %}

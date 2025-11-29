@@ -5,6 +5,7 @@ core-r1:
     - core_routers
   data:
     vault_path: "network/devices/core-r1"
+    vars_file: "data/core-r1.yaml"
 
 l3-sw-01: 
   hostname: 192.168.12.36
@@ -13,6 +14,7 @@ l3-sw-01:
     - l3_switches
   data: 
     vault_path: "network/devices/l3-sw-01"
+    vars_file: "data/l3-sw-01.yaml"
 
 l3-sw-02:
   hostname: 192.168.12.37
@@ -21,6 +23,7 @@ l3-sw-02:
     - l3_switches
   data:
     vault_path: "network/devices/l3-sw-02"
+    vars_file: "data/l3-sw-02.yaml"
 
 access-sw-01:
   hostname: 192.168.12.38
@@ -29,6 +32,7 @@ access-sw-01:
     - access_switches
   data: 
     vault_path: "network/devices/access-sw-01"
+    vars_file: "data/access-sw-01.yaml"
 
 access-sw-02:
   hostname: 192.168.12.39
@@ -37,6 +41,7 @@ access-sw-02:
     - access_switches
   data:
     vault_path: "network/devices/access-sw-02"
+    vars_file: "data/access-sw-02.yaml"
   
 access-sw-03:
   hostname: 192.168.12.40
@@ -45,6 +50,7 @@ access-sw-03:
     - access_switches
   data:
     vault_path: "network/devices/access-sw-03"
+    vars_file: "data/access-sw-03.yaml"
 
 access-sw-04:
   hostname: 192.168.12.41
@@ -53,3 +59,4 @@ access-sw-04:
     - access_switches
   data:
     vault_path: "network/devices/access-sw-04"
+    vars_file: "data/access-sw-04.yaml"

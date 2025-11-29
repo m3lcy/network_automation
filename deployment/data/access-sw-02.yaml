@@ -1,0 +1,10 @@
+interfaces:
+  - name: FastEthernet0/4
+    mode: access
+    access_vlan: 20
+    shutdown: false
+    port_security:
+      enabled: true
+      maximum: 1
+      violation: shutdown
+      sticky: true
