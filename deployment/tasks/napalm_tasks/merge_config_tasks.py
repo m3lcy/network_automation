@@ -12,7 +12,7 @@ def merge_config(task: Task, snippet_file: str, timestamp: str, dry_run: bool = 
         snippet_path = Path("config_snippets") / snippet_file
         data_path = Path("data") / f"{task.host.name}.yaml"
 
-        if not os.path.isfile(snippet_path):
+        if not snippet_path.exists():
             msg = f"Snippet not found: {snippet_path}"
             logging.error(msg)
             return Result(
@@ -22,7 +22,7 @@ def merge_config(task: Task, snippet_file: str, timestamp: str, dry_run: bool = 
             )
         
         device_vars = {}
-        if os.path.isfile(data_path):
+        if data_path.exists():
             with open(data_path, "r") as f:
                 device_vars = yaml.safe_load(f) or {}
 

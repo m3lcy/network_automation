@@ -2,7 +2,6 @@ import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.resolve()))
 import argparse
-import os
 
 from modules.logging_utils import setup_logging
 from modules.vault_utils import init_vault
