@@ -4,6 +4,8 @@ from datetime import datetime
 
 def setup_logging():
     os.makedirs("logs", exist_ok = True)
+    os.makedirs("outputs", exist_ok = True)
+
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
     logging.basicConfig(
