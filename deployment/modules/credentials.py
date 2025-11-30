@@ -7,9 +7,11 @@ def load_credentials(nr, vault_client):
             response = vault_client.secrets.kv.read_secret_version(path = path)
 
             data = response["data"]["data"]
-            host.username = data.get("username", host.username)
+            host.username = data["username"]
             host.password = data["login_password"]
             host.data["secret"] = data["enable_secret"]
+            host.data["local_username"] = data.get("local_username", "admin")
+            host.data["local_password"] = data["local_password"]
 
             logging.info(f"Loaded vault credentials for {host.name} ({host.hostname}) from Vault")
 

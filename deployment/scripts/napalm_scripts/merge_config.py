@@ -1,8 +1,8 @@
 import sys
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent.resolve()))
-import argparse
 
+import argparse
 from modules.logging_utils import setup_logging
 from modules.vault_utils import init_vault
 from modules.nornir_init import init_nornir
@@ -32,9 +32,7 @@ group.add_argument(
 )
 
 args = parser.parse_args()
-
-# default 
-dry_run_flag = not args.commit
+dry_run_flag = not args.commit          # default
 
 timestamp = setup_logging()
 vault_client = init_vault()
