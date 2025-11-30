@@ -13,7 +13,9 @@ def backup_config(task, timestamp):
 
         config = result[0].result["config"]["running"]
 
-        filename = f"outputs/{task.host.name}_napalm_backup_{timestamp}.cfg"
+        os.makedirs("outputs/backups", exist_ok = True)
+
+        filename = f"outputs/backups/{task.host.name}_napalm_backup_{timestamp}.cfg"
         with open(filename, "w") as f:
             f.write(config)
         os.chmod(filename, 0o444)

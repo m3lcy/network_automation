@@ -36,7 +36,7 @@ def merge_config(task: Task, snippet_file: str, timestamp: str, dry_run: bool = 
         result = task.run(
             task = napalm_configure,
             configuration = rendered_snippet,
-            replace = False,
+            replace = False,            # no replace; keep False
             dry_run = dry_run
         )
 
@@ -56,10 +56,10 @@ def merge_config(task: Task, snippet_file: str, timestamp: str, dry_run: bool = 
             )
         
         # commit
-        logging.info(f"Config merge committed for {task.host.name} ({task.host.hostname}): {diff_filename}")
+        logging.info(f"Config merge COMMITTED for {task.host.name} ({task.host.hostname}): {diff_filename}")
         return Result(
             host = task.host,
-            result = f"Merge committed for {task.host.name} ({task.host.hostname})"
+            result = f"Merge COMMITTED completed for {task.host.name} ({task.host.hostname})"
         )
     
     except Exception as e:
