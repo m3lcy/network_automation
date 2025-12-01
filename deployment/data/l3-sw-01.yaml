@@ -14,7 +14,7 @@ crypto_rsa_key: "crypto key generate rsa usage-keys label ssh-key modulus 1024"
 
 line_vty:
   range: 0 4
-  password: "{{ vty_password }}"
+  password: "cisco123"
   login: local
   transport_input: ssh
 
