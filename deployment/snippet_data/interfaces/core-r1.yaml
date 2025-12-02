@@ -1,0 +1,32 @@
+interfaces:
+  - name: GigabitEthernet0/0
+    mode: routed
+    ip_address: 172.16.12.226
+    subnet_mask: 255.255.255.252
+    duplex: auto
+    speed: auto
+    shutdown: false
+
+  - name: GigabitEthernet0/1
+    mode: routed
+    ip_address: 172.16.12.229
+    subnet_mask: 255.255.255.252
+    duplex: auto
+    speed: auto
+    shutdown: false
+
+  - name: Serial0/0/0
+    mode: routed
+    ip_address: 172.17.12.1
+    subnet_mask: 255.255.255.0
+    nat_inside: false
+    clock_rate: 2000000
+    shutdown: false
+
+  - name: Serial0/0/1
+    shutdown: true
+
+  - name: VLAN1
+    ip_address: 192.168.12.35
+    subnet_mask: 255.255.255.224
+    shutdown: false

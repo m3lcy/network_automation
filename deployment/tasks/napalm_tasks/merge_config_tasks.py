@@ -1,30 +1,35 @@
 from nornir.core.task import Task, Result
 from nornir_napalm.plugins.tasks import napalm_configure
 from pathlib import Path
+from datetime import datetime
 import logging 
 import os
 import yaml
 from jinja2 import Environment, FileSystemLoader, StrictUndefined
 from jinja2 import Template
 
-def merge_config(task: Task, snippet_file: str, timestamp: str, dry_run: bool = True):
+def merge_config(task: Task, snippet_file: str, timestamp: str = None, dry_run: bool = True):
+    if timestamp is None or timestamp == "manual":
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     try:
         snippet_path = Path("config_snippets") / snippet_file
-        data_path = Path("data") / f"{task.host.name}.yaml"
+
+        snippet_name = Path(snippet_file).stem.replace("_config", "")   
+        snippet_data_path = Path("snippet_data") / snippet_name / f"{task.host.name}.yaml"
 
         if not snippet_path.exists():
             msg = f"Snippet not found: {snippet_path}"
             logging.error(msg)
-            return Result(
-                host = task.host,
-                failed = True,
-                result = msg
-            )
+            return Result(host=task.host, failed=True, result=msg)
         
         device_vars = {}
-        if data_path.exists():
-            with open(data_path, "r") as f:
+        if snippet_data_path.exists():
+            with open(snippet_data_path, "r") as f:
                 device_vars = yaml.safe_load(f) or {}
+            logging.info(f"Loaded snippet data from {snippet_data_path}")
+        else:
+            logging.warning(f"No snippet data found for {task.host.name} at {snippet_data_path} — rendering with empty vars")
+            device_vars = {}
 
         env = Environment(
             loader = FileSystemLoader("config_snippets"),
@@ -32,6 +37,15 @@ def merge_config(task: Task, snippet_file: str, timestamp: str, dry_run: bool = 
         )
         template = env.get_template(snippet_file)
         rendered_snippet = template.render(**device_vars)
+
+        rendered_dir = Path("golden_configs/rendered") / task.host.name
+        rendered_dir.mkdir(parents=True, exist_ok=True)
+        rendered_filename = rendered_dir/f"{task.host.name}_{snippet_file}_{timestamp}.rendered.cfg"
+        
+        with open(rendered_filename, "w") as f:
+            f.write(rendered_snippet.strip() + "\n")
+        os.chmod(rendered_filename, 0o444)
+        logging.info(f"Rendered config saved: {rendered_filename}")
 
         result = task.run(
             task = napalm_configure,
