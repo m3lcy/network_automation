@@ -1,0 +1,10 @@
+nornir>=3.5.0
+nornir_napalm>=0.5.0
+nornir_netmiko>=1.0.1
+nornir_utils>=0.2.0
+nornir_jinja2>=0.2.0
+napalm>=5.1.0
+netmiko>=4.6.0
+PyYAML>=6.0.3
+jinja2>=3.1.6
+hvac>=2.3.0
