@@ -1,3 +1,8 @@
 deployment/__pycache__/
+deployment/modules/__pycache__/
+deployment/scripts/napalm_scripts/__pycache__/
+deployment/scripts/nornir_scripts/__pycache__/
+deployment/tasks/napalm_scripts/__pycache__/
+deployment/tasks/nornir_tasks/__pycache__/
 deployment/logs/
 deployment/outputs/
