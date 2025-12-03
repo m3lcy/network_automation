@@ -56,7 +56,7 @@ pip install -r requirements.txt
 python3 scripts/nornir_scripts/gather_info.py --limit access-sw-02
 ```
 
-## Run nornir_napalm merge config (dry-run by default)
+## Run nornir_napalm merge config
 ```bash
 python3 scripts/napalm_scripts/merge_config.py interfaces_config.j2 --commit --limit core-r1
 ```
