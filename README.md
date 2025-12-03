@@ -25,12 +25,14 @@ pip install -r requirements.txt
 
 # Key Scripts
 
-- scripts/nornir_scripts/gather_info.py     -(nornir_netmiko show commands)
-- scripts/nornir_scripts/config_tasks.py    -(nornir_netmiko quick command config)
-- scripts/nornir_napalm/gather_getters      -(napalm facts for multi-vendors)
-- scripts/nornir_napalm/backup_config.py    -(backup running configs)
-- scripts/nornir_napalm/merge_config.py     -(safe incremental changes using config snippets)
-- scripts/nornir_napalm/replace_config.py   -(full config replace + rollback on failure) 
+```
+scripts/nornir_scripts/gather_info.py     -(nornir_netmiko show commands)
+scripts/nornir_scripts/config_tasks.py    -(nornir_netmiko quick command config)
+scripts/nornir_napalm/gather_getters      -(napalm facts for multi-vendors)
+scripts/nornir_napalm/backup_config.py    -(backup running configs)
+scripts/nornir_napalm/merge_config.py     -(safe incremental changes using config snippets)
+scripts/nornir_napalm/replace_config.py   -(full config replace + rollback on failure) 
+```
 
 # Optional flags
 
