@@ -23,19 +23,24 @@ def send_config(task, timestamp):
         specific_cmds = task.host.data.get("custom_commands", [])
         if specific_cmds:
             task.run(
-                task = netmiko_send_command,
+                task = netmiko_send_config,
                 config_commands = specific_cmds
             )
+            logging.info(f"Sent {len(specific_cmds)} custom commands to {task.host.name} ({task.host.hostname})")
 
         show_run = task.run(
-            task = netmiko_send_config,
-            command_string = "show run"
+            task = netmiko_send_command,
+            command_string = "show run",
+            use_textfsm=False
         )
 
-        filename = f"outputs/{task.host.name}_config_{timestamp}.cfg"
+        output_dir = "outputs"
+        os.makedirs(output_dir, exist_ok = True)
+        filename = os.path.join(output_dir, f"{task.host.name}_config_{timestamp}.cfg")
         with open(filename, "w") as f:
             f.write(show_run.result)
         os.chmod(filename, 0o444)
+        logging.info(f"Configuration saved for {task.host.name} ({task.host.hostname}): {filename}")
 
         return Result(
             host = task.host,
@@ -43,7 +48,7 @@ def send_config(task, timestamp):
         )
 
     except Exception as e:
-        logging.error(f"Error collecting info from {task.hostname.name} ({task.host.hostname}). Error: {e}")
+        logging.error(f"Error collecting info from {task.host.name} ({task.host.hostname}). Error: {e}")
         return Result(
             host = task.host,
             failed = True,
