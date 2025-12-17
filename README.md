@@ -28,7 +28,7 @@ pip install -r requirements.txt
 ```
 scripts/nornir_scripts/gather_info.py     -(nornir_netmiko show commands)
 scripts/nornir_scripts/config_tasks.py    -(nornir_netmiko quick command config)
-scripts/nornir_napalm/gather_getters.py      -(napalm facts for multi-vendors)
+scripts/nornir_napalm/gather_getters.py   -(napalm facts for multi-vendors)
 scripts/nornir_napalm/backup_config.py    -(backup running configs)
 scripts/nornir_napalm/merge_config.py     -(safe incremental changes using config snippets)
 scripts/nornir_napalm/replace_config.py   -(full config replace + rollback on failure) 
@@ -68,5 +68,5 @@ python3 scripts/napalm_scripts/merge_config.py interfaces_config.j2 --commit --l
 python3 scripts/napalm_scripts/replace_config.py universal.j2 --dry-run --limit l3-sw-01
 ```
 
-Can be modified at any time to fit workload needs
+Can be modified at any time to fit workload needs <br/>
 All credential data is retrieved from HashiCorp Vault
