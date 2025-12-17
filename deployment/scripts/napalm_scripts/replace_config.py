@@ -19,9 +19,10 @@ vault_client = init_vault()
 nr = init_nornir()
 load_credentials(nr, vault_client)
 
-tempalte_path = Path("golden_configs/templates") / args.template
-if not tempalte_path.exists():
-    print(f"[ERROR] Golden template not found: {tempalte_path}")
+BASE_DIR = Path(__file__).resolve().parents[2]  
+template_path = BASE_DIR / "templates" / args.template
+if not template_path.exists():
+    print(f"[ERROR] Golden template not found: {template_path}")
     raise sys.exit(1)
 
 run_task(
