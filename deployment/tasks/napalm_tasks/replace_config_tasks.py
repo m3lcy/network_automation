@@ -14,8 +14,11 @@ def replace_config(task: Task, template_file: str, timestamp: str = None, dry_ru
     if timestamp is None or timestamp == "manual":
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     try: 
-        template_path = Path("golden_configs/templates") / template_file
-        data_path = Path("data") / f"{task.host.name}.yaml"
+        BASE_DIR = Path(__file__).resolve().parents[2]   
+        TEMPLATE_DIR = BASE_DIR / "templates"
+        
+        template_path = TEMPLATE_DIR / template_file
+        data_path = BASE_DIR / "data" / f"{task.host.name}.yaml"
 
         if not template_path.exists():
             msg = f"Golden template not found: {template_path}"
@@ -32,7 +35,7 @@ def replace_config(task: Task, template_file: str, timestamp: str = None, dry_ru
                 device_vars = yaml.safe_load(f) or {}
 
         env = Environment(
-            loader = FileSystemLoader("golden_configs/templates"),
+            loader = FileSystemLoader(str(TEMPLATE_DIR)),
             undefined = StrictUndefined,
             trim_blocks = True,
             lstrip_blocks = True

@@ -12,10 +12,14 @@ def merge_config(task: Task, snippet_file: str, timestamp: str = None, dry_run: 
     if timestamp is None or timestamp == "manual":
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     try:
-        snippet_path = Path("config_snippets") / snippet_file
+        BASE_DIR = Path(__file__).resolve().parents[2]   
+        TEMPLATE_DIR = BASE_DIR / "templates"
+        SNIPPET_DATA_DIR = BASE_DIR / "snippet_data"
+        
+        snippet_path = TEMPLATE_DIR / snippet_file
 
         snippet_name = Path(snippet_file).stem.replace("_config", "")   
-        snippet_data_path = Path("snippet_data") / snippet_name / f"{task.host.name}.yaml"
+        snippet_data_path = SNIPPET_DATA_DIR / snippet_name / f"{task.host.name}.yaml"
 
         if not snippet_path.exists():
             msg = f"Snippet not found: {snippet_path}"
@@ -32,8 +36,10 @@ def merge_config(task: Task, snippet_file: str, timestamp: str = None, dry_run: 
             device_vars = {}
 
         env = Environment(
-            loader = FileSystemLoader("config_snippets"),
-            undefined = StrictUndefined
+            loader=FileSystemLoader(str(TEMPLATE_DIR)),
+            undefined = StrictUndefined,
+            trim_blocks=True,
+            lstrip_blocks=True
         )
         template = env.get_template(snippet_file)
         rendered_snippet = template.render(**device_vars)
