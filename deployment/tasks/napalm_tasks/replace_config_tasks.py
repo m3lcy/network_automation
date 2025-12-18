@@ -43,6 +43,19 @@ def replace_config(task: Task, template_file: str, timestamp: str = None, dry_ru
         template = env.get_template(template_file)
         golden_config = template.render(**device_vars, host = task.host)
 
+        if dry_run:
+            lines = [line for line in golden_config.splitlines() if line.strip()]
+            logging.info(f"[DRY-RUN] Would replace config on {task.host.name}")
+            print(f"\n[DRY-RUN] Full running-config replace preview for {task.host.name} ({task.host.hostname}):")
+            for line in lines:
+                print(f"    {line}")
+            print("[DRY-RUN] No changes applied.\n")
+
+            return Result(
+                host = task.host,
+                result = f"[DRY-RUN] Previewed full config replace ({len(lines)} lines) on {task.host.name}"
+            )
+
         rendered_dir = Path("golden_configs/rendered/") / task.host.name
         rendered_dir.mkdir(parents=True, exist_ok=True)
         rendered_filename = rendered_dir / f"{task.host.name}_{template_file}_{timestamp}.rendered.cfg"

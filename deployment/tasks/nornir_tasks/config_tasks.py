@@ -3,7 +3,7 @@ from nornir.core.task import Result
 import logging
 import os
 
-def send_config(task, timestamp):
+def send_config(task, timestamp, dry_run = False):
     try:
         global_cmds = [
             'banner motd ^Authorized Access Only!!!^',
@@ -13,6 +13,21 @@ def send_config(task, timestamp):
             'no ip domain-lookup',
             'ip domain-name cisco.com'
         ]
+
+        specific_cmds = task.host.data.get("custom_commands", [])
+        all_cmds = global_cmds + specific_cmds
+
+        if dry_run:
+            logging.info(f"[DRY-RUN] Would send {len(all_cmds)} commands to {task.host.name}")
+            print(f"\n[DRY-RUN] Commands preview for {task.host.name} ({task.host.hostname}):")
+            for cmd in all_cmds:
+                print(f"    {cmd}")
+            print("[DRY-RUN] No changes applied.\n")
+
+            return Result(
+                host=task.host,
+                result=f"[DRY-RUN] Previewed {len(all_cmds)} commands on {task.host.name}"
+            )
 
         task.run(
             task = netmiko_send_config,

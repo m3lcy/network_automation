@@ -20,9 +20,10 @@ nr = init_nornir()
 load_credentials(nr, vault_client)
 
 run_task(
-    nr=nr,
-    task_func=merge_config,   
-    snippet_file=args.template,
-    commit=args.commit,
-    limit=args.limit
+    nr = nr,
+    task_func = merge_config,   
+    snippet_file = args.template,
+    commit = args.commit,
+    limit = args.limit,
+    pass_dry_run = True
 )

@@ -44,6 +44,19 @@ def merge_config(task: Task, snippet_file: str, timestamp: str = None, dry_run: 
         template = env.get_template(snippet_file)
         rendered_snippet = template.render(**device_vars)
 
+        if dry_run:
+            lines = [line for line in rendered_snippet.splitlines() if line.strip()]
+            logging.info(f"[DRY-RUN] Would merge {len(lines)} config lines to {task.host.name}")
+            print(f"\n[DRY-RUN] Merged snippet preview for {task.host.name} ({task.host.hostname}):")
+            for line in lines:
+                print(f"    {line}")
+            print("[DRY-RUN] No changes applied.\n")
+
+            return Result(
+                host = task.host,
+                result = f"[DRY-RUN] Previewed merge for {len(lines)} lines on {task.host.name}"
+            )
+
         rendered_dir = Path("golden_configs/rendered") / task.host.name
         rendered_dir.mkdir(parents=True, exist_ok=True)
         rendered_filename = rendered_dir/f"{task.host.name}_{snippet_file}_{timestamp}.rendered.cfg"

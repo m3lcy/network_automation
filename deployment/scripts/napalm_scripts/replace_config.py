@@ -26,9 +26,10 @@ if not template_path.exists():
     raise sys.exit(1)
 
 run_task(
-    nr=nr,
-    task_func=replace_config,   
-    template_file=args.template,
-    commit=args.commit,
-    limit=args.limit
+    nr = nr,
+    task_func = replace_config,   
+    template_file = args.template,
+    commit = args.commit,
+    limit = args.limit,
+    pass_dry_run = True
 )
