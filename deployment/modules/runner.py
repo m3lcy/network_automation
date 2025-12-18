@@ -18,14 +18,15 @@ def run_task(nr, task_func, **task_kwargs):
     dry_run = not commit
 
     if limit:
-        if limit.startswith("group:"):
+        exact_match = nr.filter(F(name=limit))
+        if len(exact_match.inventory.hosts) > 0:
+            nr = exact_match
+        elif limit.startswith("group:"):
             group_name = limit[len("group:"):].strip()
-            nr = nr.filter(F(groups__contains = group_name))
+            nr = nr.filter(F(groups__contains=group_name))
         else:
-            filtered = nr.filter(F(name=limit))
-            if len(filtered.inventory.hosts) == 0:
-                filtered = nr.filter(F(name__contains = limit) | F(name__regex=limit))
-            nr = filtered
+            nr = nr.filter(F(name__contains=limit) | F(name__regex=limit))
+
 
     if task_kwargs.pop("pass_dry_run", False):
         result = nr.run(task_func, dry_run = dry_run, **task_kwargs)
