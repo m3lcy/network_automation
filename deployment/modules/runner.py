@@ -4,7 +4,7 @@ from nornir.core.filter import F
 
 def get_common_parser():
     parser = argparse.ArgumentParser()
-    parser.add_argument("template", help="Jinja2 template or snippet file")
+    parser.add_argument("template", nargs = "?", default = None, help="Jinja2 template or snippet file")
     group = parser.add_mutually_exclusive_group()
     group.add_argument("--dry-run", action="store_true", help="Dry-run (default)")
     group.add_argument("--commit", action="store_true", help="Commit changes")
@@ -12,14 +12,26 @@ def get_common_parser():
     return parser
 
 def run_task(nr, task_func, **task_kwargs):
-    args = argparse.Namespace()
-    args.dry_run = not task_kwargs.pop("commit", False)
-    args.limit = task_kwargs.pop("limit", None)
+    commit = task_kwargs.pop("commit", False)
+    limit = task_kwargs.pop("limit", None)
 
-    if args.limit:
-        nr = nr.filter(F(name=args.limit) | F(name__contains=args.limit) | F(name__regex=args.limit))
+    dry_run = not commit
 
-    result = nr.run(task=task_func, dry_run=args.dry_run, **task_kwargs)
+    if limit:
+        if limit.startswith("group:"):
+            group_name = limit[len("group:"):].strip()
+            nr = nr.filter(F(groups__contains = group_name))
+        else:
+            filtered = nr.filter(F(name=limit))
+            if len(filtered.inventory.hosts) == 0:
+                filtered = nr.filter(F(name__contains = limit) | F(name__regex=limit))
+            nr = filtered
+
+    if task_kwargs.pop("pass_dry_run", False):
+        result = nr.run(task_func, dry_run = dry_run, **task_kwargs)
+    else:
+        result = nr.run(task = task_func, **task_kwargs)
+
     from nornir_utils.plugins.functions import print_result
     print_result(result)
     return result
