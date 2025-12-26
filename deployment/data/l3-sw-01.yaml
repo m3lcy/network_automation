@@ -17,6 +17,9 @@ line_vty:
   password: "cisco123"
   login: local
   transport_input: ssh
+  access_class:
+    name: MGMT_VTY_ACL
+    direction: in
 
 vlans: 
   - { id: 10, name: CORE }
@@ -28,53 +31,61 @@ vlans:
   - { id: 300, name: GUEST }
   - { id: 999, name: BLACKHOLE }
 
-vtp:
-  mode: server
-  domain: BRANCH_NYC
-  version: 2
-
 stp:
   mode: pvst
   vlans: 10,20,30,100,200,300
   priority: 24576
 
 interfaces:
+  - name: Loopback0
+    description: "LOOPBACK - SSH"
+    ip_address: 172.16.255.2 
+    subnet_mask: 255.255.255.255
+    shutdown: false
+
   - name: FastEthernet0/1
+    description: "TRUNK TO access-sw-02 fa0/1"
     mode: trunk
     native_vlan: 99 
     shutdown: false
 
   - name: FastEthernet0/2
+    description: "TRUNK TO l3-sw-02 fa0/2"
     mode: trunk
     shutdown: false
 
   - name: FastEthernet0/3
+    description: "TRUNK TO l3-sw-03 fa0/3"
     mode: trunk
     shutdown: false
 
   - name: FastEthernet0/5
+    description: "TRUNK TO access-sw-03 g0/1"
     mode: trunk
     native_vlan: 99
     service_policy_input: VLAN30_POLICY
-    mls_qos_trust_cos: true
     shutdown: false
 
   - name: FastEthernet0/6
+    description: "TRUNK TO access-sw-04 fa0/1"
     mode: trunk
     native_vlan: 99
     shutdown: false
 
   - name: FastEthernet0/4
+    description: "SPARE / RESERVED FOR FUTURE USE"
     mode: access
     access_vlan: 999
     shutdown: true
 
   - name: FastEthernet0/7-24
+    description: "SPARE / RESERVED FOR FUTURE USE"
     mode: access
     access_vlan: 999
     shutdown: true
 
   - name: GigabitEthernet0/1
+    description: "UPLINK TO core-r1 g0/0"
     mode: routed
     ip_address: 172.16.12.225
     subnet_mask: 255.255.255.252
@@ -83,94 +94,106 @@ interfaces:
     shutdown: false
 
   - name: GigabitEthernet0/2
+    description: "TRUNK TO access-sw-01 g0/1"
     mode: trunk
     native_vlan: 99
     shutdown: false
 
   - name: VLAN1
-    ip_address: 192.168.12.36
-    subnet_mask: 255.255.255.224
-    shutdown: false
+    shutdown: true
 
   - name: VLAN10
+    description: "VLAN10 COMPUTE"
     ip_address: 172.16.12.1
     subnet_mask: 255.255.255.224
     helper_address: 172.16.12.226
     nat_inside: true
     shutdown: false
-    hsrp:
-      version: 2
-      group: 1
-      ip: 172.16.12.254
+    vrrp:
+      group: 10
+      ip: 172.16.12.30
       priority: 150
-      preempt: true
+      auth_text: "{{ vrrp_auth_text }}"
+      is_primary: true
 
   - name: VLAN20
+    description: "VLAN20 MANAGEMENT"
     ip_address: 172.16.12.33
     subnet_mask: 255.255.255.224
     helper_address: 172.16.12.226
     nat_inside: true
     shutdown: false
-    hsrp:
-      version: 2
-      group: 1
-      ip: 172.16.12.254
+    vrrp:
+      group: 20
+      ip: 172.16.12.62
       priority: 150
-      preempt: true
+      auth_text: "{{ vrrp_auth_text }}"
+      is_primary: true
     
   - name: VLAN30
+    description: "VLAN30 COMPUTE"
     ip_address: 172.16.12.65
     subnet_mask: 255.255.255.224
     helper_address: 172.16.12.226
     nat_inside: true
     shutdown: false
-    hsrp:
-      version: 2
-      group: 1
-      ip: 172.16.12.254
+    vrrp:
+      group: 30
+      ip: 172.16.12.94
       priority: 150
-      preempt: true
-    service_policy_output: VLAN30_POLICY
-
-  - name: VLAN99
-    ip_address: 172.16.12.97
-    subnet_mask: 255.255.255.224
-    helper_address: 172.16.12.226
-    nat_inside: true
-    shutdown: false
-    hsrp: 
-      version: 2
-      group: 1
-      ip: 172.16.12.254
-      priority: 150
-      preempt: true
+      auth_text: "{{ vrrp_auth_text }}"
+      is_primary: true
 
   - name: VLAN100
+    description: "VLAN100 R&D"
     ip_address: 172.16.12.129
     subnet_mask: 255.255.255.224
     helper_address: 172.16.12.226
     nat_inside: true
     shutdown: false
+    vrrp:
+      group: 100
+      ip: 172.16.12.158
+      priority: 150
+      auth_text: "{{ vrrp_auth_text }}"
+      is_primary: true
 
   - name: VLAN200
+    description: "VLAN200 EMPLOYEE"
     ip_address: 172.16.12.161
     subnet_mask: 255.255.255.224
     helper_address: 172.16.12.226
     nat_inside: true
     shutdown: false
+    vrrp:
+      group: 200
+      ip: 172.16.12.190
+      priority: 150
+      auth_text: "{{ vrrp_auth_text }}"
+      is_primary: true
 
   - name: VLAN300
+    description: "VLAN300 GUEST"
     ip_address: 172.16.12.193
     subnet_mask: 255.255.255.224
     helper_address: 172.16.12.226
     nat_inside: true
     shutdown: false
+    vrrp:
+      group: 300
+      ip: 172.16.12.222
+      priority: 150
+      auth_text: "{{ vrrp_auth_text }}"
+      is_primary: true
 
 routing:
   ospf:
     process_id: 1
     router_id: 2.2.2.2
-    log_adjacency_changes: true
+    passive_interfaces:
+      default: true
+      except:
+        - GigabitEthernet0/1
     networks:
       - { network: 172.16.12.0, wildcard: 0.0.0.31, area: 0 }
       - { network: 172.16.12.32, wildcard: 0.0.0.31, area: 0 }
@@ -180,28 +203,16 @@ routing:
       - { network: 172.16.12.160, wildcard: 0.0.0.31, area: 0 }
       - { network: 172.16.12.192, wildcard: 0.0.0.31, area: 0 }
       - { network: 172.16.12.224, wildcard: 0.0.0.31, area: 0 }
+      - { network: 172.16.12.225, wildcard: 0.0.0.3, area: 0 }
 
-  rip: 
-    version: 2
-    networks: 
-      - 172.16.0.0
-    auto_summary: false
+access_lists:
+  - name: MGMT_VTY_ACL
+    type: extended
+    entries:
+      - { remark: "RESTRICT SSH MANAGEMENT ACCESS" }
+      - { remark: "ONLY ALLOW FROM MANAGEMENT VLAN 20" }
+      - { permit: tcp, src: 172.16.12.32, wildcard: 0.0.0.31, dest: any, port: "eq 22" }
+      - { remark: "ALLOW OTHER TRAFFIC" }
+      - { permit: ip, src: any, dest: any }
 
-  qos: 
-    enable_mls_qos: true
-    vlan30:
-      acl: VLAN30_ACL
-      class_map: VLAN30_CLASS
-      policy_map: VLAN30_POLICY
-      priority_percent: 50
-
-  access_lists:
-    - name: VLAN30_ACL
-      type: extended
-      rules: 
-        - permit: ip
-          src: 172.16.12.64
-          wildcard: 0.0.0.31
-          dest: any
-
-  default_gateway: 172.16.12.98
+default_gateway: 172.16.12.98
