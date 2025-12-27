@@ -60,12 +60,12 @@ python3 scripts/nornir_scripts/gather_info.py --limit access-sw-02
 
 ## Run nornir_napalm merge config
 ```bash
-python3 scripts/napalm_scripts/merge_config.py interfaces_config.j2 --commit --limit core-r1
+python3 scripts/napalm_scripts/merge_config.py interfaces.j2 --dry-run --limit core-r1
 ```
 
 ## Run nornir_napalm full golden config replace + rollback on failure
 ```bash
-python3 scripts/napalm_scripts/replace_config.py universal.j2 --dry-run --limit l3-sw-01
+python3 scripts/napalm_scripts/replace_config.py universal.j2 --commit --limit l3-sw-01
 ```
 
 Can be modified at any time to fit workload needs <br/>
