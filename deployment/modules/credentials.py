@@ -12,6 +12,7 @@ def load_credentials(nr, vault_client):
             host.data["secret"] = data["enable_secret"]
             host.data["local_username"] = data.get("local_username", "admin")
             host.data["local_password"] = data["local_password"]
+            host.data["vrrp_auth_text"] = data["vrrp_auth_text"]
 
             logging.info(f"Loaded vault credentials for {host.name} ({host.hostname}) from Vault")
 
