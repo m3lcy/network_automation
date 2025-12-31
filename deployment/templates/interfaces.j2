@@ -67,8 +67,8 @@ interface {{ intf.name }}
  vrrp {{ intf.vrrp.group }} ip {{ intf.vrrp.ip }}
  {% endif %}
  vrrp {{ intf.vrrp.group }} priority {{ intf.vrrp.priority | default(100) }}
- {% if intf.vrrp.auth_text is defined %}
- vrrp {{ intf.vrrp.group }} authentication text {{ intf.vrrp.auth_text }}
+ {% if intf.vrrp.auth_text is defined and intf.vrrp.auth_text == true %}
+ vrrp {{ intf.vrrp.group }} authentication text {{ host.data["vrrp_auth_text"] }}
  {% else %}
   ! WARNING: VRRP authentication missing for {{ intf.name }}
  {% endif %}
