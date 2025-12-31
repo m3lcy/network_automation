@@ -106,7 +106,7 @@ interfaces:
       group: 10
       ip: 172.16.12.30
       priority: 100
-      auth_text: "{{ vrrp_auth_text }}"
+      auth_text: true
       
   - name: VLAN20
     description: "VLAN20 MANAGEMENT"

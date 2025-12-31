@@ -113,7 +113,7 @@ interfaces:
       group: 10
       ip: 172.16.12.30
       priority: 150
-      auth_text: "{{ vrrp_auth_text }}"
+      auth_text: true
       is_primary: true
 
   - name: VLAN20
@@ -127,7 +127,7 @@ interfaces:
       group: 20
       ip: 172.16.12.62
       priority: 150
-      auth_text: "{{ vrrp_auth_text }}"
+      auth_text: true
       is_primary: true
     
   - name: VLAN30
@@ -141,7 +141,7 @@ interfaces:
       group: 30
       ip: 172.16.12.94
       priority: 150
-      auth_text: "{{ vrrp_auth_text }}"
+      auth_text: true
       is_primary: true
 
   - name: VLAN100
@@ -155,7 +155,7 @@ interfaces:
       group: 100
       ip: 172.16.12.158
       priority: 150
-      auth_text: "{{ vrrp_auth_text }}"
+      auth_text: true
       is_primary: true
 
   - name: VLAN200
@@ -169,7 +169,7 @@ interfaces:
       group: 200
       ip: 172.16.12.190
       priority: 150
-      auth_text: "{{ vrrp_auth_text }}"
+      auth_text: true
       is_primary: true
 
   - name: VLAN300
@@ -183,7 +183,7 @@ interfaces:
       group: 300
       ip: 172.16.12.222
       priority: 150
-      auth_text: "{{ vrrp_auth_text }}"
+      auth_text: true
       is_primary: true
 
 routing:
