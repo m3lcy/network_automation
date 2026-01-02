@@ -38,7 +38,7 @@ interfaces:
     shutdown: false
 
   - name: FastEthernet0/2
-    description: "CORE-USER-01"
+    description: "UPLINK TO CORE-USER-01"
     mode: access
     access_vlan: 10
     shutdown: false
@@ -49,7 +49,7 @@ interfaces:
       sticky: true
 
   - name: FastEthernet0/3
-    description: "CORE-USER-02"
+    description: "UPLINK TO CORE-USER-02"
     mode: access
     access_vlan: 10
     shutdown: false
@@ -60,7 +60,7 @@ interfaces:
       sticky: true
 
   - name: FastEthernet0/4
-    description: "CORE-USER-00"
+    description: "UPLINK TO CORE-USER-00"
     mode: access
     access_vlan: 10
     shutdown: false
@@ -71,7 +71,7 @@ interfaces:
       sticky: true
 
   - name: FastEthernet0/5
-    description: "CORE-USER-03"
+    description: "UPLINK TO CORE-USER-03"
     mode: access
     access_vlan: 10
     shutdown: false
