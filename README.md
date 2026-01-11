@@ -1,9 +1,19 @@
 # Network Automation Platform 
-Nornir + Netmiko + NAPALM + Jinja2 + YAML + HashiCorp Vault
 
-Python>=3.12 required
+This repository provides a modular network automation framework designed to safely manage
+network device configurations. It supports both full golden configuration replacement and
+incremental day-2 changes with built-in dry-run validation, side-by-side diffs, and automatic
+rollback on config failure.
+
+## Supported Features
+• Full golden configuration replace with automatic rollback  
+• Safe incremental configuration merges for day-2 operations  
+• Dry-run mode with configuration diffs before deployment  
+• Multi-vendor fact gathering and configuration backups using NAPALM  
+• Secure credential retrieval via HashiCorp Vault
 
 # Setup
+Python>=3.12 required
 
 ## Clone and enter
 ```bash
@@ -23,7 +33,7 @@ venv\Scripts\activate       # Windows
 pip install -r requirements.txt
 ```
 
-# Key Scripts
+# Core Scripts
 
 ```
 scripts/nornir_scripts/gather_info.py     -(nornir_netmiko show commands)
@@ -68,5 +78,8 @@ python3 scripts/napalm_scripts/merge_config.py interfaces.j2 --dry-run --limit c
 python3 scripts/napalm_scripts/replace_config.py universal.j2 --commit --limit l3-sw-01
 ```
 
-Can be modified at any time to fit workload needs <br/>
-All credential data is retrieved from HashiCorp Vault
+Can be modified at any time to fit workload needs.<br/>
+All credential data is retrieved from HashiCorp Vault.
+
+**TechStack**<br>
+**Nornir**, **Netmiko**, **NAPALM**, **Jinja2**, **YAML**, **HashiCorp Vault**
