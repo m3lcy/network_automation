@@ -8,7 +8,7 @@ from modules.vault_utils import init_vault
 from modules.nornir_init import init_nornir
 from modules.credentials import load_credentials
 from modules.runner import get_common_parser, run_task
-from tasks.napalm_tasks.backup_config_tasks import backup_config
+from tasks.nornir_netmiko_tasks.gather_tasks import gather_info
 from nornir_utils.plugins.functions import print_result
 
 parser = get_common_parser()
@@ -21,7 +21,7 @@ load_credentials(nr, vault_client)
 
 run_task(
     nr = nr,
-    task_func = backup_config,
+    task_func = gather_info,
     timestamp = timestamp,
     commit = args.commit,
     limit = args.limit,
