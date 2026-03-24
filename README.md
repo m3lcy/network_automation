@@ -95,7 +95,7 @@ python scripts/nornir_napalm_scripts/replace_config.py universal.j2 --commit --l
 python scripts/nornir_napalm_scripts/backup_config.py --limit group: access_switches
 
 # Gather detailed info
-python scripts/nornir_netmiko_scripts/gather_info.py --limit "access-sw-01"
+python scripts/nornir_netmiko_scripts/gather_info.py --limit access-sw-01
 ```
 
 **TechStack**<br>
